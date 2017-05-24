@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hasee.cloudapplication.Menu">
+    tools:context="com.example.FortuneStar.FoodGrab.Menu">
 
     <ScrollView
         android:layout_width="368dp"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hasee.cloudapplication">
+    package="com.example.FortuneStar.FoodGrab">
 
     <application
         android:allowBackup="true"
@@ -9,18 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.FortuneStar.FoodGrab.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BMRcalculation" />
-        <activity android:name=".Menu" />
-        <activity android:name=".NutrientComposition" />
-        <activity android:name=".Order" />
-        <activity android:name=".SignUp"></activity>
+        <activity android:name="com.example.FortuneStar.FoodGrab.Menu" />
+        <activity android:name="com.example.FortuneStar.FoodGrab.SignUp"></activity>
     </application>
 
 </manifest>

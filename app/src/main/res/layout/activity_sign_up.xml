@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hasee.cloudapplication.SignUp">
+    tools:context="com.example.FortuneStar.FoodGrab.SignUp">
 
 </android.support.constraint.ConstraintLayout>

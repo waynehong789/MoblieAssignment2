@@ -1,4 +1,4 @@
-package com.example.hasee.cloudapplication;
+package com.example.FortuneStar.FoodGrab;
 
 import org.junit.Test;
 

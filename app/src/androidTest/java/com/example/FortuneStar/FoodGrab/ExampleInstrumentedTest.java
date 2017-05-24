@@ -1,4 +1,4 @@
-package com.example.hasee.cloudapplication;
+package com.example.FortuneStar.FoodGrab;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
