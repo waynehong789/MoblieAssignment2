@@ -19,6 +19,9 @@
         <activity android:name=".Menu" />
         <activity android:name=".SignUp" />
         <activity android:name=".SearchActivity"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAN_d6wGq-V_7l4HFHRiKu_ru9YDZjWo3o"/>
     </application>
 
 </manifest>
