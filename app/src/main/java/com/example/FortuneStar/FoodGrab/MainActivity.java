@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Arrays;
 
 /**
- * Created by nikol on 28/04/2017.
+ * Created by Wayne on 25/05/2017
  */
 
 public class MainActivity extends AppCompatActivity  {
@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity  {
             if (resultCode == ResultCodes.OK) {
                 Toast.makeText(this, "Login Successful, Welcome " + firebaseAuth.getCurrentUser().getDisplayName(), Toast.LENGTH_SHORT).show();
                 getUserDetails();
-                //ToDo Add activity after log in
+                // Start the search activity after logging in
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivity(searchIntent);
                 finish();
                 return;
             } else {
@@ -102,7 +104,9 @@ public class MainActivity extends AppCompatActivity  {
         if (firebaseAuth.getCurrentUser() != null) {
             Toast.makeText(this, "Welcome Back, " + firebaseAuth.getCurrentUser().getDisplayName() + " !", Toast.LENGTH_SHORT).show();
             getUserDetails();
-            //ToDo Add activity after log in
+            // Start the search activity after logging in
+            Intent searchIntent = new Intent(this, SearchActivity.class);
+            startActivity(searchIntent);
         } else {
             //not signed in
             startActivityForResult(AuthUI
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity  {
                             .createSignInIntentBuilder()
                             //ToDo enable smart lock after development change false to (!BuildConfig.DEBUG)
                             .setIsSmartLockEnabled(false)
-                            //ToDo add the majestic Healthy Guys App logo
+                            //ToDo add the majestic App logo
                             .setLogo(R.mipmap.ic_launcher)
                             .setProviders(Arrays.asList(
                                     new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
