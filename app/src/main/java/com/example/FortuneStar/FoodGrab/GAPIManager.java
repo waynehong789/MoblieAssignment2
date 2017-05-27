@@ -58,7 +58,7 @@ public class GAPIManager {
      * @param radius The search radius in Metres for an area we want to search
      * @param type The type of place we would like to search. See https://developers.google.com/places/android-api/supported_types
      */
-    public void getLocalPlaces(Location location, float radius, String type){
+    public void getLocalPlaces(Location location, double radius, String type){
         //GET https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyAdSzh6Lhdd43nBv1yO37vY3IJxJDVA-AY&type=restaurant&location=-36.85749657,174.652164058&radius=500
         String apiUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
         String locationCoords = location.getLatitude() + "," + location.getLongitude();

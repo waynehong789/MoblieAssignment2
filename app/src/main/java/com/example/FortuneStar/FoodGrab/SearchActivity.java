@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -23,6 +25,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,44 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     private ArrayList<Restaurant> restaurantsList;
     private ListView restaurantListView;
+    private TextView distanceText;
+
+    private enum FoodTypes {
+        CN("Chinese"),
+        JP("Japanese"),
+        KR("Korean"),
+        NZ("New Zealand"),
+        UK("United Kingdom"),
+        US("United States");
+
+        private String theType;
+
+        FoodTypes(String type){
+            theType = type;
+        }
+
+        @Override
+        public String toString() {
+            return theType;
+        }
+    }
+
+    private enum PriceRanges {
+        LOW("$20 Under"),
+        MEDIUM("$20 - $50"),
+        HIGH("$50+ Plus");
+
+        private String theRange;
+
+        PriceRanges(String range){
+            theRange = range;
+        }
+
+        @Override
+        public String toString() {
+            return theRange;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +99,29 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         // Setup listener for list view
         restaurantListView = (ListView) findViewById(R.id.resultsList);
         restaurantListView.setOnItemClickListener(this);
+
+        // Get distance textview
+        distanceText = (TextView) findViewById(R.id.txtDistance);
+
+        // Populate spinners
+        Spinner spnrType = (Spinner) findViewById(R.id.spnrType);
+        Spinner spnrPrice = (Spinner) findViewById(R.id.spnrPrice);
+        spnrType.setAdapter(new ArrayAdapter<FoodTypes>(this, R.layout.support_simple_spinner_dropdown_item, FoodTypes.values()));
+        spnrPrice.setAdapter(new ArrayAdapter<PriceRanges>(this, R.layout.support_simple_spinner_dropdown_item, PriceRanges.values()));
     }
 
     public void findPlaces(View view){
         Log.i(TAG, "Finding Places");
+        // TODO: Get this location from the GPS
         Location myLoc = new Location("");
         //-33.8670522,151.1957362 - Google's example coordinates
         myLoc.setLatitude(-36.846272);
         myLoc.setLongitude(174.768259);
-        api.getLocalPlaces(myLoc, 500, "restaurant");
+
+        String distance = distanceText.getText().toString();
+        double dDistance = Double.valueOf(distance.trim()).doubleValue();
+
+        api.getLocalPlaces(myLoc, dDistance, "restaurant");
 
         // Construct an intent for the place picker
         /*try {
@@ -89,6 +144,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             }
         }
     }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e(TAG, "Error occurred connecting to google");
@@ -111,9 +167,12 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                     restaurant.setId(jsonResult.getString("id"));
                     restaurant.setName(jsonResult.getString("name"));
                     restaurant.setPlace_id(jsonResult.getString("place_id"));
-                    JSONObject opening_hours = jsonResult.getJSONObject("opening_hours");
-                    restaurant.setOpen_now(opening_hours.getBoolean("open_now"));
-                    restaurant.setRating(jsonResult.getDouble("rating"));
+                    if(json.has("opening_hours")) { // Not always returned
+                        JSONObject opening_hours = jsonResult.getJSONObject("opening_hours");
+                        if (opening_hours.has("open_now")) // Also not always returned
+                            restaurant.setOpen_now(opening_hours.getBoolean("open_now"));
+                    }
+                    if(json.has("rating")) restaurant.setRating(jsonResult.getDouble("rating"));
                     restaurant.setVicinity(jsonResult.getString("vicinity"));
                     // TODO: Implement images for list and detail page
 
