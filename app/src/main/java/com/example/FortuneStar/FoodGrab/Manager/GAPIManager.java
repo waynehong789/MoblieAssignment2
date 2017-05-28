@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab;
+package com.example.FortuneStar.FoodGrab.Manager;
 
 import android.location.Location;
 import android.util.Log;
@@ -40,7 +40,7 @@ public class GAPIManager {
     private Network network;
 
     // Callback to run when we get a response from Google
-    GAPIResponseHandler responseHandler;
+    public GAPIResponseHandler responseHandler;
 
     public GAPIManager(){
         // setup network and cache
@@ -60,29 +60,31 @@ public class GAPIManager {
      */
     public void getLocalPlaces(Location location, double radius, String type){
         //GET https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyAdSzh6Lhdd43nBv1yO37vY3IJxJDVA-AY&type=restaurant&location=-36.85749657,174.652164058&radius=500
-        String apiUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-        String locationCoords = location.getLatitude() + "," + location.getLongitude();
-        String requestStr = "key=" + API_KEY + "&type=" + type + "&location=" + locationCoords + "&radius=" + radius;
+        if(location != null) {
+            String apiUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+            String locationCoords = location.getLatitude() + "," + location.getLongitude();
+            String requestStr = "key=" + API_KEY + "&type=" + type + "&location=" + locationCoords + "&radius=" + radius;
 
-        String request = apiUrl + requestStr;
+            String request = apiUrl + requestStr;
 
-        // Start constructing the api http request
-        StringRequest strRequest = new StringRequest(Request.Method.GET, request, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                // Do something with response
-                // Log.i(TAG, "Received Response: " + response);
-                responseHandler.onDataReturned(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Handle error
-                Log.e(TAG, "Received Error: " + error.toString());
-            }
-        });
+            // Start constructing the api http request
+            StringRequest strRequest = new StringRequest(Request.Method.GET, request, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // Do something with response
+                    Log.i(TAG, "Received Response: " + response);
+                    responseHandler.onDataReturned(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Handle error
+                    Log.e(TAG, "Received Error: " + error.toString());
+                }
+            });
 
-        reqQueue.add(strRequest);
+            reqQueue.add(strRequest);
+        }
     }
 
     /**

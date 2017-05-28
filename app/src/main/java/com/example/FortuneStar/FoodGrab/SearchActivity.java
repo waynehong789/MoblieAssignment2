@@ -1,5 +1,7 @@
 package com.example.FortuneStar.FoodGrab;
 
+import android.*;
+import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -14,9 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.FortuneStar.FoodGrab.Manager.GAPIManager;
+import com.example.FortuneStar.FoodGrab.Manager.GPSManager;
+import com.example.FortuneStar.FoodGrab.Manager.PermissionManager;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
@@ -25,10 +28,8 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GAPIManager.GAPIResponseHandler, AdapterView.OnItemClickListener {
 
@@ -37,6 +38,8 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     private GoogleApiClient mGoogleApiClient;
     private GAPIManager api;
+    private GPSManager gpsManager;
+    private PermissionManager permissionManager;
 
     private ArrayList<Restaurant> restaurantsList;
     private ListView restaurantListView;
@@ -84,6 +87,9 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // Get permission to start gathering location data (Used in GPSManager might be redundant)
+        permissionManager = new PermissionManager(Manifest.permission.ACCESS_FINE_LOCATION, "To show restaurants near you", this);
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -94,13 +100,16 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         api = new GAPIManager();
         api.responseHandler = this; // Tell the response handler that we want to use this class for a callback
 
+        // Setup GPSManager and start gathering current location
+        gpsManager = new GPSManager(this);
+
         restaurantsList = new ArrayList<Restaurant>();
 
         // Setup listener for list view
         restaurantListView = (ListView) findViewById(R.id.resultsList);
         restaurantListView.setOnItemClickListener(this);
 
-        // Get distance textview
+        // Get distance TextView
         distanceText = (TextView) findViewById(R.id.txtDistance);
 
         // Populate spinners
@@ -113,26 +122,16 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     public void findPlaces(View view){
         Log.i(TAG, "Finding Places");
         // TODO: Get this location from the GPS
-        Location myLoc = new Location("");
+        Location myLoc = gpsManager.getCurrentLocation();
+        Log.i(TAG, "Location: Lat: " + myLoc.getLatitude() + " Lng: " + myLoc.getLongitude());
         //-33.8670522,151.1957362 - Google's example coordinates
-        myLoc.setLatitude(-36.846272);
-        myLoc.setLongitude(174.768259);
+        //myLoc.setLatitude(-36.846272);
+        //myLoc.setLongitude(174.768259);
 
         String distance = distanceText.getText().toString();
         double dDistance = Double.valueOf(distance.trim()).doubleValue();
 
         api.getLocalPlaces(myLoc, dDistance, "restaurant");
-
-        // Construct an intent for the place picker
-        /*try {
-            PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-            Intent intent = intentBuilder.build(this);
-            startActivityForResult(intent, REQUEST_PLACE_PICKER);
-        } catch (GooglePlayServicesRepairableException e) {
-            Log.e(TAG, "Error Google Repairable");
-        } catch (GooglePlayServicesNotAvailableException e) {
-            Log.e(TAG, "Error Google Services Unavailable");
-        }*/
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -190,6 +189,8 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
+        // Stop the GPSManager from getting location updates
+        gpsManager.getLocationManager().removeUpdates(gpsManager);
     }
 
     @Override
