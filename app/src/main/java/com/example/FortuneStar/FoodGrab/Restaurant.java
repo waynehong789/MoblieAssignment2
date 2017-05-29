@@ -1,6 +1,8 @@
 package com.example.FortuneStar.FoodGrab;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
@@ -12,7 +14,7 @@ import java.util.ArrayList;
  *  Only to be used as a object. Put any functionality into other classes
  */
 
-public class Restaurant {
+public class Restaurant implements Parcelable {
 
 
     private String id; // Google's ID
@@ -105,5 +107,15 @@ public class Restaurant {
 
     public void setVicinity(String vicinity) {
         this.vicinity = vicinity;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }
