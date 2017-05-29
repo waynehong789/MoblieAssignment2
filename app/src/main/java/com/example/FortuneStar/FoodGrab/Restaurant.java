@@ -13,6 +13,8 @@ import java.util.ArrayList;
  */
 
 public class Restaurant {
+
+
     private String id; // Google's ID
     private String place_id; // Place ID - will be used to get details about the restaurant
     private String name;
@@ -20,6 +22,34 @@ public class Restaurant {
     private double rating; // Rating out of 5 stars
     private String vicinity; // Address of restaurant
     private ArrayList<Bitmap> images;
+
+    private String address;
+    private String contact;
+    private String description;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public ArrayList<Bitmap> getImages() {
         return images;
