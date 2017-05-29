@@ -52,7 +52,7 @@ public class RestaurantDetails extends AppCompatActivity {
         FD=FirebaseDatabase.getInstance();
         DR=FD.getReferenceFromUrl("https://moblieassignment2.firebaseio.com/");
 
-        DatabaseReference contactDR = DR.child("Contact").child(restaurantName+"_contact").child("Phone");
+        DatabaseReference contactDR = DR.child("RestaurantDetails").child(restaurantName+"_contact").child("Phone");
         contactDR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
