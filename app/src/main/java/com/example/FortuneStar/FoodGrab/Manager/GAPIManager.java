@@ -67,6 +67,9 @@ public class GAPIManager {
 
             String request = apiUrl + requestStr;
 
+            Log.i(TAG, request);
+
+
             // Start constructing the api http request
             StringRequest strRequest = new StringRequest(Request.Method.GET, request, new Response.Listener<String>() {
                 @Override
