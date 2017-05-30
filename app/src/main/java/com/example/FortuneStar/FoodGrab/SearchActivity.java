@@ -131,7 +131,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
         // Collect data from the search fields
         String distance = distanceText.getText().toString();
-        double dDistance = Double.valueOf(distance.trim()).doubleValue();
+        double dDistance = Double.valueOf(distance.trim());
 
         api.getLocalPlaces(myLoc, dDistance, "restaurant");
     }
@@ -199,7 +199,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Restaurant restaurant = (Restaurant) parent.getItemAtPosition(position);
         Intent intent = new Intent(this, RestaurantDetails.class);
-        intent.putExtra("Restaurant", restaurant.getPlace_id());
+        intent.putExtra("Restaurant", restaurant);
         startActivity(intent);
     }
 }

@@ -109,6 +109,29 @@ public class Restaurant implements Parcelable {
         this.vicinity = vicinity;
     }
 
+    public Restaurant() {
+
+    }
+
+    /**
+     * Parcel constructor to be called after receiving parcel through intent. This will be used by
+     * the parcel creator.
+     *
+     * @param source parcel that has been sent through intent
+     */
+    public Restaurant(Parcel source){
+        // Reconstruct parcel
+        id = source.readString();
+        place_id = source.readString();
+        name = source.readString();
+        vicinity = source.readString();
+        address = source.readString();
+        contact = source.readString();
+        description = source.readString();
+        open_now = source.readByte() != 0;
+        rating = source.readDouble();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -116,6 +139,27 @@ public class Restaurant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        // Create a parcel to be passed to another activity
+        dest.writeString(id);
+        dest.writeString(place_id);
+        dest.writeString(name);
+        dest.writeString(vicinity);
+        dest.writeString(address);
+        dest.writeString(contact);
+        dest.writeString(description);
+        dest.writeByte((byte) (open_now ? 1 : 0));
+        dest.writeDouble(rating);
+        // MUST MATCH ORDER OF THE CONSTRUCTOR
     }
+
+    public static final Parcelable.Creator<Restaurant> CREATOR
+            = new Parcelable.Creator<Restaurant>() {
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 }
