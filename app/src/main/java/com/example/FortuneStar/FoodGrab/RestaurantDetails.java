@@ -34,8 +34,7 @@ public class RestaurantDetails extends AppCompatActivity {
     //Firebase Storage stuff
     private StorageReference SR;
 
-    private String restaurantName="Restaurant1";
-    private Restaurant restaurant;
+    private String restaurantID;
     private TextView RNView,RAView,RCView,RDView;
     private ImageView RImageView;
 
@@ -51,11 +50,13 @@ public class RestaurantDetails extends AppCompatActivity {
         RDView = (TextView)findViewById(R.id.RestaurantDescription);
         RImageView=(ImageView)findViewById(R.id.RestaurantImage);
 
+        restaurantID = getIntent().getStringExtra("Restaurant");
+
         //declare the database reference object.
         FD=FirebaseDatabase.getInstance();
         DR=FD.getReferenceFromUrl("https://moblieassignment2.firebaseio.com/");
 
-        DatabaseReference contactDR = DR.child("Contact").child(restaurantName+"_contact").child("Phone");
+        DatabaseReference contactDR = DR.child("RestaurantDetails").child(restaurantID).child("phone");
         contactDR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,7 +71,7 @@ public class RestaurantDetails extends AppCompatActivity {
         });
 
         SR = FirebaseStorage.getInstance().getReferenceFromUrl("gs://moblieassignment2.appspot.com");
-        StorageReference imageSR = SR.child("RestaurantImages/"+restaurantName+"/"+restaurantName+"_image1.jpg");
+        StorageReference imageSR = SR.child("RestaurantImages/"+restaurantID+"/"+restaurantID+"_image1.jpg");
         final long ONE_MEGABYTE = 1024 * 1024;
         imageSR.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -88,7 +89,7 @@ public class RestaurantDetails extends AppCompatActivity {
      */
     public void OpenMap(View view){
         Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra("Restaurant", )
+        intent.putExtra("Restaurant", restaurantID);
         startActivity(intent);
     }
 
