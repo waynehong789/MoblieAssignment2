@@ -8,11 +8,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    private Restaurant displayRestaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Bundle intentData = getIntent().getExtras();
+        displayRestaurant = intentData.getParcelable("Restaurant");
     }
 
 
@@ -39,8 +45,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng restaurantLocation = new LatLng(displayRestaurant.getLocation().getLatitude(), displayRestaurant.getLocation().getLongitude());
+        mMap.addMarker(new MarkerOptions().position(restaurantLocation).title(displayRestaurant.getName()));
+
+        // Setup camera to zoom into the place we have selected
+        LatLngBounds placeView = new LatLngBounds(
+                new LatLng(displayRestaurant.getViewportSW().getLatitude(),
+                        displayRestaurant.getViewportSW().getLongitude()),
+                new LatLng(displayRestaurant.getViewportNE().getLatitude(),
+                        displayRestaurant.getViewportNE().getLongitude()));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeView.getCenter(), 15));
     }
 }

@@ -175,6 +175,35 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                     }
                     if(json.has("rating")) restaurant.setRating(jsonResult.getDouble("rating"));
                     restaurant.setVicinity(jsonResult.getString("vicinity"));
+
+                    Location restaurantLoc = new Location(""); // Create blank location
+                    Location restaurantViewportNE = new Location(""); // Create blank NE viewport
+                    Location restaurantViewportSW = new Location(""); // Create blank SW viewport
+
+
+                    //Log.i(TAG, "lat: " + geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lat") + " lng:" + geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lng"));
+                    // Add locations from the geometry field
+                    if(jsonResult.has("geometry")) {
+                        JSONObject geometry = jsonResult.getJSONObject("geometry");
+                        if (geometry.has("location")) { // Set place location
+                            //Log.i(TAG, "Location found on response");
+                            restaurantLoc.setLatitude(geometry.getJSONObject("location").getDouble("lat"));
+                            restaurantLoc.setLongitude(geometry.getJSONObject("location").getDouble("lng"));
+                            restaurant.setLocation(restaurantLoc);
+                        }
+                        if (geometry.has("viewport")) { // Get viewport locations
+                            //Log.i(TAG, "Viewport found on response");
+                            restaurantViewportNE.setLatitude(geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lat"));
+                            restaurantViewportNE.setLongitude(geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lng"));
+                            restaurant.setViewportNE(restaurantViewportNE);
+
+                            restaurantViewportSW.setLatitude(geometry.getJSONObject("viewport").getJSONObject("southwest").getDouble("lat"));
+                            restaurantViewportSW.setLongitude(geometry.getJSONObject("viewport").getJSONObject("southwest").getDouble("lng"));
+                            restaurant.setViewportSW(restaurantViewportSW);
+                        }
+                        //Log.i(TAG, "lat: " + geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lat") + " lng:" + geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lng"));
+                    }
+
                     // TODO: Implement images for list and detail page
 
                     restaurantsList.add(restaurant);

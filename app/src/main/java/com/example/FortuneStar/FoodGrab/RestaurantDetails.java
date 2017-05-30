@@ -35,6 +35,7 @@ public class RestaurantDetails extends AppCompatActivity {
     private StorageReference SR;
 
     private String restaurantID;
+    private Restaurant restaurant;
     private TextView RNView,RAView,RCView,RDView;
     private ImageView RImageView;
 
@@ -50,13 +51,15 @@ public class RestaurantDetails extends AppCompatActivity {
         RDView = (TextView)findViewById(R.id.RestaurantDescription);
         RImageView=(ImageView)findViewById(R.id.RestaurantImage);
 
-        restaurantID = getIntent().getStringExtra("Restaurant");
+        Bundle intentData = getIntent().getExtras();
+        restaurant = intentData.getParcelable("Restaurant");
+        //restaurantID = getIntent().getStringExtra("Restaurant");
 
         //declare the database reference object.
         FD=FirebaseDatabase.getInstance();
         DR=FD.getReferenceFromUrl("https://moblieassignment2.firebaseio.com/");
 
-        DatabaseReference contactDR = DR.child("RestaurantDetails").child(restaurantID).child("phone");
+        DatabaseReference contactDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("phone");
         contactDR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,8 +73,9 @@ public class RestaurantDetails extends AppCompatActivity {
             }
         });
 
+        // TODO: Add proper error handling so it does not break when the image is missing
         SR = FirebaseStorage.getInstance().getReferenceFromUrl("gs://moblieassignment2.appspot.com");
-        StorageReference imageSR = SR.child("RestaurantImages/"+restaurantID+"/"+restaurantID+"_image1.jpg");
+        StorageReference imageSR = SR.child("RestaurantImages/"+restaurant.getPlace_id()+"/"+restaurant.getPlace_id()+"_image1.jpg");
         final long ONE_MEGABYTE = 1024 * 1024;
         imageSR.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -89,7 +93,7 @@ public class RestaurantDetails extends AppCompatActivity {
      */
     public void OpenMap(View view){
         Intent intent = new Intent(this, MapsActivity.class);
-        intent.putExtra("Restaurant", restaurantID);
+        intent.putExtra("Restaurant", restaurant);
         startActivity(intent);
     }
 

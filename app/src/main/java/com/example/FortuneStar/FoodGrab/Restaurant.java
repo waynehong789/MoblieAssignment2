@@ -1,6 +1,7 @@
 package com.example.FortuneStar.FoodGrab;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -28,6 +29,11 @@ public class Restaurant implements Parcelable {
     private String address;
     private String contact;
     private String description;
+
+    // Location data
+    private Location location;
+    private Location viewportNE;
+    private Location viewportSW;
 
     public String getAddress() {
         return address;
@@ -109,6 +115,30 @@ public class Restaurant implements Parcelable {
         this.vicinity = vicinity;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Location getViewportNE() {
+        return viewportNE;
+    }
+
+    public void setViewportNE(Location viewportNE) {
+        this.viewportNE = viewportNE;
+    }
+
+    public Location getViewportSW() {
+        return viewportSW;
+    }
+
+    public void setViewportSW(Location viewportSW) {
+        this.viewportSW = viewportSW;
+    }
+
     public Restaurant() {
 
     }
@@ -130,6 +160,9 @@ public class Restaurant implements Parcelable {
         description = source.readString();
         open_now = source.readByte() != 0;
         rating = source.readDouble();
+        location = Location.CREATOR.createFromParcel(source);
+        viewportNE = Location.CREATOR.createFromParcel(source);
+        viewportSW = Location.CREATOR.createFromParcel(source);
     }
 
     @Override
@@ -149,6 +182,9 @@ public class Restaurant implements Parcelable {
         dest.writeString(description);
         dest.writeByte((byte) (open_now ? 1 : 0));
         dest.writeDouble(rating);
+        location.writeToParcel(dest, flags);
+        viewportNE.writeToParcel(dest, flags);
+        viewportSW.writeToParcel(dest, flags);
         // MUST MATCH ORDER OF THE CONSTRUCTOR
     }
 
