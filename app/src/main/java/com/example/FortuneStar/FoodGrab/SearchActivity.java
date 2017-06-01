@@ -19,11 +19,14 @@ import com.example.FortuneStar.FoodGrab.Adapter.ResultAdapter;
 import com.example.FortuneStar.FoodGrab.Manager.GAPIManager;
 import com.example.FortuneStar.FoodGrab.Manager.GPSManager;
 import com.example.FortuneStar.FoodGrab.Manager.PermissionManager;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,10 +116,10 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         distanceText = (TextView) findViewById(R.id.txtDistance);
 
         // Populate spinners
-        Spinner spnrType = (Spinner) findViewById(R.id.spnrType);
+        /*Spinner spnrType = (Spinner) findViewById(R.id.spnrType);
         Spinner spnrPrice = (Spinner) findViewById(R.id.spnrPrice);
         spnrType.setAdapter(new ArrayAdapter<FoodTypes>(this, R.layout.support_simple_spinner_dropdown_item, FoodTypes.values()));
-        spnrPrice.setAdapter(new ArrayAdapter<PriceRanges>(this, R.layout.support_simple_spinner_dropdown_item, PriceRanges.values()));
+        spnrPrice.setAdapter(new ArrayAdapter<PriceRanges>(this, R.layout.support_simple_spinner_dropdown_item, PriceRanges.values()));*/
     }
 
     public void findPlaces(View view){
@@ -232,6 +235,23 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         Restaurant restaurant = (Restaurant) parent.getItemAtPosition(position);
         Intent intent = new Intent(this, RestaurantDetails.class);
         intent.putExtra("Restaurant", restaurant);
+        startActivity(intent);
+    }
+
+    public void signOut(View v) {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getApplicationContext(), "You already signed out!", Toast.LENGTH_SHORT).show();
+                            backToMain();
+                        }
+                    });
+    }
+
+    public void backToMain(){
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
