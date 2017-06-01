@@ -15,7 +15,7 @@ package="com.example.FortuneStar.FoodGrab">
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-    <activity android:name=".Menu" />
+    <activity android:name=".MenuActivity" />
     <activity android:name=".SearchActivity" />
 
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAdSzh6Lhdd43nBv1yO37vY3IJxJDVA-AY" />
