@@ -124,19 +124,22 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
 
     public void findPlaces(View view){
         Log.i(TAG, "Finding Places");
+        if(gpsManager.getCurrentLocation() != null) {
+            // Get current location of device
+            Location myLoc = gpsManager.getCurrentLocation();
+            Log.i(TAG, "Location: Lat: " + myLoc.getLatitude() + " Lng: " + myLoc.getLongitude());
+            //-33.8670522,151.1957362 - Google's example coordinates
+            //myLoc.setLatitude(-36.846272);
+            //myLoc.setLongitude(174.768259);
 
-        // Get current location of device
-        Location myLoc = gpsManager.getCurrentLocation();
-        Log.i(TAG, "Location: Lat: " + myLoc.getLatitude() + " Lng: " + myLoc.getLongitude());
-        //-33.8670522,151.1957362 - Google's example coordinates
-        //myLoc.setLatitude(-36.846272);
-        //myLoc.setLongitude(174.768259);
+            // Collect data from the search fields
+            String distance = distanceText.getText().toString();
+            double dDistance = Double.valueOf(distance.trim());
 
-        // Collect data from the search fields
-        String distance = distanceText.getText().toString();
-        double dDistance = Double.valueOf(distance.trim());
-
-        api.getLocalPlaces(myLoc, dDistance, "restaurant");
+            api.getLocalPlaces(myLoc, dDistance, "restaurant");
+        } else {
+            Toast.makeText(this, "Unable to find location", Toast.LENGTH_LONG).show();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
