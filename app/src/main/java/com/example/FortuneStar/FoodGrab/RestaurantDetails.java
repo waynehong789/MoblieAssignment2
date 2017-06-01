@@ -27,11 +27,11 @@ public class RestaurantDetails extends AppCompatActivity {
 
     private String TAG ="viewDatabase";
 
-    //Firebase Database stuff
+    // Firebase Database stuff
     private FirebaseDatabase FD;
     private DatabaseReference DR;
 
-    //Firebase Storage stuff
+    // Firebase Storage stuff
     private StorageReference SR;
 
     private String restaurantID;
@@ -59,12 +59,58 @@ public class RestaurantDetails extends AppCompatActivity {
         FD=FirebaseDatabase.getInstance();
         DR=FD.getReferenceFromUrl("https://moblieassignment2.firebaseio.com/");
 
+        // load the restaurant contact from Firebase database
         DatabaseReference contactDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("phone");
         contactDR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String contact=dataSnapshot.getValue(String.class);
                 RCView.setText(contact);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // load the restaurant address from Firebase database
+        DatabaseReference addressDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("address");
+        addressDR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String address=dataSnapshot.getValue(String.class);
+                RAView.setText(address);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // load the restaurant name from Firebase database
+        DatabaseReference nameDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("name");
+        nameDR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String name=dataSnapshot.getValue(String.class);
+                RNView.setText(name);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // load the restaurant description from Firebase database
+        DatabaseReference descriptionDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("description");
+        descriptionDR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String description=dataSnapshot.getValue(String.class);
+                RDView.setText(description);
             }
 
             @Override
