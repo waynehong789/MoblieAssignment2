@@ -1,6 +1,5 @@
 package com.example.FortuneStar.FoodGrab;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.location.Location;
@@ -16,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.FortuneStar.FoodGrab.Adapter.ResultAdapter;
 import com.example.FortuneStar.FoodGrab.Manager.GAPIManager;
 import com.example.FortuneStar.FoodGrab.Manager.GPSManager;
 import com.example.FortuneStar.FoodGrab.Manager.PermissionManager;

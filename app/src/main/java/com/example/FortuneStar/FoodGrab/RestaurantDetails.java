@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -139,6 +139,12 @@ public class RestaurantDetails extends AppCompatActivity {
      */
     public void OpenMap(View view){
         Intent intent = new Intent(this, MapsActivity.class);
+        intent.putExtra("Restaurant", restaurant);
+        startActivity(intent);
+    }
+
+    public void OpenMenu(View view){
+        Intent intent = new Intent(this, MenuActivity.class);
         intent.putExtra("Restaurant", restaurant);
         startActivity(intent);
     }
