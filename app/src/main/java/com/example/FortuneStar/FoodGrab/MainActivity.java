@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         //findViewById(R.id.sign_out_button).setOnClickListener(this);
         isSignedIn();
+
     }
 
     @Override
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity  {
                             //ToDo enable smart lock after development change false to (!BuildConfig.DEBUG)
                             .setIsSmartLockEnabled(false)
                             //ToDo add the majestic App logo
-                            .setLogo(R.mipmap.ic_launcher)
+                            .setLogo(R.drawable.foodgrab)
                             .setProviders(Arrays.asList(
                                     new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
