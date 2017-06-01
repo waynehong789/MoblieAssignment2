@@ -61,7 +61,7 @@ public class MenuAdapter extends ArrayAdapter<MenuListItem> { // extends ArrayAd
                 holder = new MenuAdapter.ViewHolder();
 
                 holder.display_name = (TextView) vi.findViewById(R.id.name);
-                holder.display_price = (TextView) vi.findViewById(R.id.vicinity);
+                holder.display_price = (TextView) vi.findViewById(R.id.price);
 
                 vi.setTag(holder);
             } else {
@@ -69,7 +69,7 @@ public class MenuAdapter extends ArrayAdapter<MenuListItem> { // extends ArrayAd
             }
 
             holder.display_name.setText(menuList.get(position).getName());
-            holder.display_price.setText(menuList.get(position).getPrice() + "");
+            holder.display_price.setText("$" + menuList.get(position).getPrice());
         } catch (Exception ex) {
 
         }

@@ -3,7 +3,10 @@ package com.example.FortuneStar.FoodGrab;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.FortuneStar.FoodGrab.Adapter.MenuAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +26,11 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseDatabase FD;
     private DatabaseReference DR;
 
+    private ArrayList<MenuListItem> menuListItems;
+
+    private ListView menuListView;
+    private TextView menuName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,30 +39,39 @@ public class MenuActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         displayRestaurant = data.getParcelable("Restaurant");
 
+        menuListView = (ListView) findViewById(R.id.menuListView);
+
+        menuListItems = new ArrayList<>();
+
+        menuName = (TextView) findViewById(R.id.txtViewMenuName);
+        menuName.setText(displayRestaurant.getName());
+
         // Get menu data from database
         //declare the database reference object.
         FD= FirebaseDatabase.getInstance();
         DR=FD.getReferenceFromUrl("https://moblieassignment2.firebaseio.com/");
 
-       /* DatabaseReference nameDR = DR.child("MENU").child(displayRestaurant.getPlace_id()).child("MName");
-        nameDR.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String name=dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
         DatabaseReference menuDR = DR.child("MENU");
         menuDR.orderByChild("name").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                MenuListItem item = dataSnapshot.getValue(MenuListItem.class);
-                Log.i("MENU _ACTIVITY", dataSnapshot.getKey() + " has a name of " + item.getName());
+                // Get children and iterate over
+                Iterable<DataSnapshot> iDataSnapshot = dataSnapshot.getChildren();
+
+                int menuArrayCount = 0;
+
+                for(DataSnapshot ds : iDataSnapshot) {
+                    if(dataSnapshot.getKey().equals(displayRestaurant.getPlace_id())) {
+                        ds.child(menuArrayCount + "");
+                        MenuListItem item = ds.getValue(MenuListItem.class);
+                        menuListItems.add(item);
+                        Log.i("MENU _ACTIVITY", dataSnapshot.getKey() + " has a name of " + item.getName());
+                    }
+                    menuArrayCount++;
+                    Log.i("MENU_ACTIVITY", "Checked a datasnapshot key: " + dataSnapshot.getKey());
+                }
+
+                populateMenuList();
             }
 
             @Override
@@ -77,5 +94,12 @@ public class MenuActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void populateMenuList(){
+        //ResultAdapter adbResult = new ResultAdapter(this, 0, restaurantsList);
+        //restaurantListView.setAdapter(adbResult);
+        MenuAdapter adbMenu = new MenuAdapter(this, 0, menuListItems);
+        menuListView.setAdapter(adbMenu);
     }
 }
