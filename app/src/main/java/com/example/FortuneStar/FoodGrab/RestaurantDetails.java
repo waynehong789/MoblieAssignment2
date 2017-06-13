@@ -36,7 +36,7 @@ public class RestaurantDetails extends AppCompatActivity {
 
     private String restaurantID;
     private Restaurant restaurant;
-    private TextView RNView,RAView,RCView,RDView;
+    private TextView RNView,RAView,RCView,RDView,RTView,RPView;
     private ImageView RImageView;
 
 
@@ -48,6 +48,8 @@ public class RestaurantDetails extends AppCompatActivity {
         RNView = (TextView)findViewById(R.id.RestaurantName);
         RAView = (TextView)findViewById(R.id.RestaurantAddress);
         RCView = (TextView)findViewById(R.id.RestaurantContact);
+        RTView = (TextView)findViewById(R.id.restaurantType);
+        RPView = (TextView)findViewById(R.id.restaurantPrice);
         RDView = (TextView)findViewById(R.id.RestaurantDescription);
         RImageView=(ImageView)findViewById(R.id.RestaurantImage);
 
@@ -112,6 +114,36 @@ public class RestaurantDetails extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String description=dataSnapshot.getValue(String.class);
                 RDView.setText(description);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // load the restaurant type from Firebase database
+        DatabaseReference typeDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("type");
+        typeDR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String type=dataSnapshot.getValue(String.class);
+                RTView.setText(type);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        // load the restaurant price from Firebase database
+        DatabaseReference priceDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("price");
+        priceDR.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String price=dataSnapshot.getValue(String.class);
+                RPView.setText(price);
             }
 
             @Override
