@@ -27,6 +27,12 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,11 +50,20 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     private GPSManager gpsManager;
     private PermissionManager permissionManager;
 
+    private mRestaurant rs;
     private ArrayList<Restaurant> restaurantsList;
+    private ArrayList<mRestaurant> preList;
     private ListView restaurantListView;
     private TextView distanceText;
+    private Spinner spinnerType, spinnerPrice;
+    public String type, price, distance="500";
+    // Firebase Database stuff
+    private FirebaseDatabase FD;
+    private DatabaseReference DR;
+    public String rType, rPrice;
+    ArrayAdapter<CharSequence> adapterType, adapterPrice;
 
-    private enum FoodTypes {
+    /*private enum FoodTypes {
         CN("Chinese"),
         JP("Japanese"),
         KR("Korean"),
@@ -83,7 +98,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         public String toString() {
             return theRange;
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +122,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         gpsManager = new GPSManager(this);
 
         restaurantsList = new ArrayList<Restaurant>();
+        preList=new ArrayList<mRestaurant>();
 
         // Setup listener for list view
         restaurantListView = (ListView) findViewById(R.id.resultsList);
@@ -120,9 +136,56 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         Spinner spnrPrice = (Spinner) findViewById(R.id.spnrPrice);
         spnrType.setAdapter(new ArrayAdapter<FoodTypes>(this, R.layout.support_simple_spinner_dropdown_item, FoodTypes.values()));
         spnrPrice.setAdapter(new ArrayAdapter<PriceRanges>(this, R.layout.support_simple_spinner_dropdown_item, PriceRanges.values()));*/
+        spinnerType = (Spinner) findViewById(R.id.spType);
+        adapterType = ArrayAdapter.createFromResource(this,R.array.type, android.R.layout.simple_spinner_item);
+        adapterType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(adapterType);
+
+        spinnerPrice = (Spinner) findViewById(R.id.spPrice);
+        adapterPrice = ArrayAdapter.createFromResource(this,R.array.price, android.R.layout.simple_spinner_item);
+        adapterPrice.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPrice.setAdapter(adapterPrice);
+
+        FD=FirebaseDatabase.getInstance();
+        DR=FD.getReferenceFromUrl("https://moblieassignment2.firebaseio.com/");
+        DatabaseReference restaurantDetailsDR = DR.child("RestaurantDetails");
+        restaurantDetailsDR.orderByChild("name").addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                rs = new mRestaurant();
+                rs = dataSnapshot.getValue(mRestaurant.class);
+                preList.add(rs);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public void findPlaces(View view){
+        restaurantsList.clear();
+        type = spinnerType.getSelectedItem().toString();
+        price = spinnerPrice.getSelectedItem().toString();
         Log.i(TAG, "Finding Places");
         if(gpsManager.getCurrentLocation() != null) {
             // Get current location of device
@@ -133,7 +196,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             //myLoc.setLongitude(174.768259);
 
             // Collect data from the search fields
-            String distance = distanceText.getText().toString();
+            distance = distanceText.getText().toString();
             double dDistance = Double.valueOf(distance.trim());
 
             api.getLocalPlaces(myLoc, dDistance, "restaurant");
@@ -210,9 +273,52 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                         //Log.i(TAG, "lat: " + geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lat") + " lng:" + geometry.getJSONObject("viewport").getJSONObject("northeast").getDouble("lng"));
                     }
 
-                    // TODO: Implement images for list and detail page
+                    // select restaurants from different conditions
+                    if(!type.equals("none")){
 
-                    restaurantsList.add(restaurant);
+                        if(!price.equals("none")){
+
+                            for(int j=0;j<preList.size();j++){
+                                rs=new mRestaurant();
+                                rs= preList.get(j);
+                                if(restaurant.getPlace_id().equals(rs.getId())){
+                                    if(rs.getType().equals(type) && rs.getPrice().equals(price)){
+                                        restaurantsList.add(restaurant);
+                                    }
+                                }
+                            }
+
+                        }
+                        else{
+                            for(int j=0;j<preList.size();j++){
+                                rs=new mRestaurant();
+                                rs= preList.get(j);
+                                if(restaurant.getPlace_id().equals(rs.getId())){
+                                    if(rs.getType().equals(type)){
+                                        restaurantsList.add(restaurant);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        if(!price.equals("none")){
+                            for(int j=0;j<preList.size();j++){
+                                rs=new mRestaurant();
+                                rs= preList.get(j);
+                                if(restaurant.getPlace_id().equals(rs.getId())){
+                                    if(rs.getPrice().equals(price)){
+                                        restaurantsList.add(restaurant);
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            restaurantsList.add(restaurant);
+                        }
+                    }
+
+                    //restaurantsList.add(restaurant);
                     //Log.i(TAG, "Added Restaurant to list");
                 }
                 Log.i(TAG, "Added all restaurants");
@@ -254,4 +360,6 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
 }

@@ -61,6 +61,7 @@ public class RestaurantDetails extends AppCompatActivity {
 
         // load the restaurant contact from Firebase database
         DatabaseReference contactDR = DR.child("RestaurantDetails").child(restaurant.getPlace_id()).child("phone");
+
         contactDR.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
