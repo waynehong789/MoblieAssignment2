@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab;
+package com.FortuneStar.FoodGrab;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.FortuneStar.FoodGrab.R;
+import com.FortuneStar.FoodGrab.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;

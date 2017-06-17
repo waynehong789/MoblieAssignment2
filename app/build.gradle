@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId 'com.example.FortuneStar.FoodGrab'
+        applicationId 'com.FortuneStar.FoodGrab'
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1

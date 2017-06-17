@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab;
+package com.FortuneStar.FoodGrab;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;

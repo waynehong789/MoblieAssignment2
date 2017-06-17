@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab.Adapter;
+package com.FortuneStar.FoodGrab.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.FortuneStar.FoodGrab.R;
-import com.example.FortuneStar.FoodGrab.Restaurant;
+import com.FortuneStar.FoodGrab.R;
+import com.FortuneStar.FoodGrab.Restaurant;
 
 import java.util.ArrayList;
 

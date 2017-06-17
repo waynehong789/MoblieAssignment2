@@ -15,11 +15,63 @@
       },
       "oauth_client": [
         {
+          "client_id": "1053304818791-dmmojgeng38koueliqvahs0g6ah0cvtm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.FortuneStar.FoodGrab",
+            "certificate_hash": "6f277d32452792db4c438578137df9997c8bdd4e"
+          }
+        },
+        {
           "client_id": "1053304818791-vqn928hbi1u2qlctla1thle2r0df9fdi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.FortuneStar.FoodGrab",
             "certificate_hash": "69dd83bd874c364337369fa410f74230fe7d1ada"
+          }
+        },
+        {
+          "client_id": "1053304818791-lghd586jiljvbmsk98cqkjr44tho7sm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN_d6wGq-V_7l4HFHRiKu_ru9YDZjWo3o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053304818791-lghd586jiljvbmsk98cqkjr44tho7sm0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053304818791:android:eb7c66e814a271c9",
+        "android_client_info": {
+          "package_name": "com.FortuneStar.FoodGrab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053304818791-80m9djonrv7ckqm8c4g9uecod2vcq5oq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.FortuneStar.FoodGrab",
+            "certificate_hash": "eb02b19d220f6eb7a04d3d74b60c439d88499b49"
           }
         },
         {

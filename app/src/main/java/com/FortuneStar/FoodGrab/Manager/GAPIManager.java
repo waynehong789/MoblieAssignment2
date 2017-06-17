@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab.Manager;
+package com.FortuneStar.FoodGrab.Manager;
 
 import android.location.Location;
 import android.util.Log;

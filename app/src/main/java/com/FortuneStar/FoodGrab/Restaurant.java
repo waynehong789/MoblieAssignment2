@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab;
+package com.FortuneStar.FoodGrab;
 
 import android.graphics.Bitmap;
 import android.location.Location;

@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab;
+package com.FortuneStar.FoodGrab;
 
 /**
  * Created by Wayne on 2017/6/13.

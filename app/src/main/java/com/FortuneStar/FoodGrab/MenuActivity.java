@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab;
+package com.FortuneStar.FoodGrab;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.FortuneStar.FoodGrab.Adapter.MenuAdapter;
+import com.FortuneStar.FoodGrab.Adapter.MenuAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

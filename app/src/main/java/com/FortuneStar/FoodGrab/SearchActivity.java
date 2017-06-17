@@ -1,4 +1,4 @@
-package com.example.FortuneStar.FoodGrab;
+package com.FortuneStar.FoodGrab;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,10 +15,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.FortuneStar.FoodGrab.Adapter.ResultAdapter;
-import com.example.FortuneStar.FoodGrab.Manager.GAPIManager;
-import com.example.FortuneStar.FoodGrab.Manager.GPSManager;
-import com.example.FortuneStar.FoodGrab.Manager.PermissionManager;
+import com.FortuneStar.FoodGrab.Adapter.ResultAdapter;
+import com.FortuneStar.FoodGrab.Manager.GAPIManager;
+import com.FortuneStar.FoodGrab.Manager.GPSManager;
+import com.FortuneStar.FoodGrab.Manager.PermissionManager;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
